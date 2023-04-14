@@ -37,7 +37,7 @@ pipeline {
 				script{
 					def CP="${params.CPNumber}"
 					if (("${HCFlag}"=="false") || (("${HCFlag}"=="true") && ("${CP}"!="0"))){
-						gv.createLinuxUnit(buildDir) 
+						gv.CreateUnit(buildDir) 
 						echo 'linux create'
 						BUILD_PROCESS_FLAG=true
 					}
