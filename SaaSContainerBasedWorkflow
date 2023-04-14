@@ -13,6 +13,8 @@ pipeline {
 		string(name: 'NXRelease', defaultValue: 'nx2306.latest', description : 'Use the latest IP from NX2306 release to create the build.')
 		string(name: 'UnitPath', defaultValue: '/apps/JenkinsBase/units/Dev', description : 'Path where build unit for the run is to be created.')
 		string(name: 'StagePath', defaultValue: '/apps/JenkinsBase/stage/Dev', description : 'Path where translator worker kits are to be staged.')
+		booleanParam(name: 'HC', defaultValue: false, description : 'Enable horizontal collaboration change package ')
+		string(name: 'CPNumber', defaultValue: '0', description : 'CP number on top of NXRelease against which build and test steps to be executed.')
 		booleanParam(name: 'Deploy', defaultValue: false, description : 'Deploy staging directory contents to customer setup')
 	}
     stages {
@@ -24,6 +26,7 @@ pipeline {
 					buildDir="${params.UnitPath}/${params.NXRelease}_TranslatorWorker_${BUILD_TIMESTAMP}"
 					stageDir="${params.StagePath}/${params.NXRelease}_TranslatorWorker_${BUILD_TIMESTAMP}"
 					NXReleaseVersion="${params.NXRelease}"
+					HCFlag="${params.HC}"
 				}
 			}
 		}
@@ -32,12 +35,24 @@ pipeline {
             agent { label "${BUILD_AGENT}" }
             steps {
 				script{
-					gv.CreateUnit(buildDir) 
+					def CP="${params.CPNumber}"
+					if (("${HCFlag}"=="false") || (("${HCFlag}"=="true") && ("${CP}"!="0"))){
+						gv.createLinuxUnit(buildDir) 
+						echo 'linux create'
+						BUILD_PROCESS_FLAG=true
+					}
+					else {
+						error "you have selected HC option but CP number is not specified correctly so skipping Group build and testing!"
+						BUILD_PROCESS_FLAG=false						
+					}
 				}					
             }
         }
         stage('BuildUnit') {
             agent { label "${BUILD_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
             steps {
 				script{
 					gv.BuildUnit(buildDir) 
@@ -46,6 +61,9 @@ pipeline {
         }
 		stage('TestUnit') {
             agent { label "${TEST_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
             steps {
 				script{
 					gv.TestUnit(buildDir) 
@@ -54,6 +72,9 @@ pipeline {
         }
 		stage('StageForContainer') {
             agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
             steps {
 				script{
 					gv.StageForContainer(buildDir,stageDir) 
@@ -62,6 +83,9 @@ pipeline {
         }
 		stage('CheckLicenseServer') {
             agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
             steps {
 				script{
 					gv.CheckLicenseServer() 
@@ -70,6 +94,9 @@ pipeline {
         }
 		stage('RemoveRunningContainers-Pre') {
             agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
             steps {
 				script{
 					gv.RemoveRunningContainers() 
@@ -78,6 +105,9 @@ pipeline {
         }
 		stage('BuildAndRunDocker') {
             agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
             steps {					
 				script{
 					try{
@@ -92,6 +122,9 @@ pipeline {
         }
 		stage('DockerCleanup') {
             agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
             steps {
 					catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
 					script{
@@ -102,6 +135,9 @@ pipeline {
         }	
 		stage('RemoveRunningContainers-Post') {
 			agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
 			steps {
 				script{
 					gv.RemoveRunningContainers() 
@@ -110,6 +146,9 @@ pipeline {
 		}
 		stage('DeployContainer') {
 			agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
 			steps {
 				script{
 					gv.DeployContainer(buildDir,stageDir) 
@@ -118,7 +157,10 @@ pipeline {
 		}			
 				
 		stage('Purge Unit') {
-			agent { label "${BUILD_AGENT}" }	
+			agent { label "${BUILD_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
 			steps {
 				script{
 					if( anyFailure == false ) {
@@ -132,7 +174,10 @@ pipeline {
 		}
 
 		stage('Purge Stage') {
-			agent { label "${STAGE_AGENT}" }	
+			agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
 			steps {
 				script{
 					if( anyFailure == false ) {
