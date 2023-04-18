@@ -215,6 +215,7 @@ pipeline {
 		}	
 		always{
 			script{
+				echo 'echo statement.'	
 				//emailHandle.sendEmail(buildDir,stageDir)
 			}
 		}
