@@ -40,6 +40,18 @@ def StageForContainer(String buildDir, String stageDir)
 	}
 }
 
+def CopyToDeploymentLocation(String buildDir, String stageDir)
+{
+	echo "Executing CopyToDeploymentLocation..."
+	script{		
+		def unitFullPath="${buildDir}"
+		def stagePath="${stageDir}"
+		
+		sh "chmod +x ./shellScripts/CopyToDeploymentLocation.sh "
+		sh "./shellScripts/CopyToDeploymentLocation.sh ${unitFullPath} ${stagePath} "		
+	}
+}
+
 def CheckLicenseServer()
 {
 	echo "Executing CheckLicenseServer..."

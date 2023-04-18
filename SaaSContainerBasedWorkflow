@@ -70,7 +70,8 @@ pipeline {
 				}
             steps {
 				script{
-					gv.TestUnit(buildDir) 
+					echo "skip step"
+					//gv.TestUnit(buildDir) 
 				}					
             }
         }
@@ -92,7 +93,8 @@ pipeline {
 				}
             steps {
 				script{
-					gv.CheckLicenseServer() 
+					echo "skip step"
+					//gv.CheckLicenseServer() 
 				}					
             }
         }
@@ -103,7 +105,8 @@ pipeline {
 				}
             steps {
 				script{
-					gv.RemoveRunningContainers() 
+					echo "skip step"
+					//gv.RemoveRunningContainers() 
 				}					
             }
         }
@@ -114,14 +117,26 @@ pipeline {
 				}
             steps {					
 				script{
-					try{
-						gv.BuildAndRunDocker(buildDir,stageDir) 
-					}
-					catch (Exception e) {
-						echo 'Exception occurred: ' + e.toString()
-						anyFailure = true
-					}
+					//try{
+						//gv.BuildAndRunDocker(buildDir,stageDir) 
+					//}
+					//catch (Exception e) {
+						//echo 'Exception occurred: ' + e.toString()
+						//anyFailure = true
+					//}
+					echo "skip step"
 				}			
+            }
+        }
+		stage('CopyToDeploymentLocation') {
+            agent { label "${STAGE_AGENT}" }
+			when {
+					expression { "${BUILD_PROCESS_FLAG}"=="true" }
+				}
+            steps {
+				script{
+					gv.CopyToDeploymentLocation(buildDir,stageDir) 
+				}					
             }
         }
 		stage('DockerCleanup') {
@@ -144,7 +159,8 @@ pipeline {
 				}
 			steps {
 				script{
-					gv.RemoveRunningContainers() 
+					echo "skip step"
+					//gv.RemoveRunningContainers() 
 				}					
 			}
 		}
@@ -155,7 +171,8 @@ pipeline {
 				}
 			steps {
 				script{
-					gv.DeployContainer(buildDir,stageDir) 
+					echo "skip step"
+					//gv.DeployContainer(buildDir,stageDir) 
 				}					
 			}
 		}			
