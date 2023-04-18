@@ -11,6 +11,9 @@ pipeline {
     agent any
 	try{
 		timeout(time: 1, unit: 'MINUTES')
+	}catch (error) {
+		println error
+		failure(message: "Timeout reached.")
 	}
 	
 	parameters {
@@ -206,10 +209,7 @@ pipeline {
 		}
     }
 	
-	catch (error) {
-		println error
-		failure(message: "Timeout reached.")
-	}
+
 	
     post {
 		
