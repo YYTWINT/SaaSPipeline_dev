@@ -87,7 +87,7 @@ def sendEmail(String buildDir, String stageDir)
 	emailext(
 		subject: subject,
 		body: details,
-		to: 'yytwint.sisw@siemens.com,nilesh.lakhotia@siemens.com,dattaprasad.sonawadekar@siemens.com,rakesh.thakur@siemens.com,roma.mohapatra@siemens.com'
+		to: 'roma.mohapatra@siemens.com'
 	)
 }
 return this
