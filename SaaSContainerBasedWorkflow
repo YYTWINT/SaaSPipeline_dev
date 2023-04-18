@@ -9,11 +9,8 @@ def boolean anyFailure = false
 
 pipeline {
     agent any
-	try{
+	option{
 		timeout(time: 1, unit: 'MINUTES')
-	}catch (error) {
-		println error
-		failure(message: "Timeout reached.")
 	}
 	
 	parameters {
