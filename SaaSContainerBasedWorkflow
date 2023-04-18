@@ -9,8 +9,13 @@ def boolean anyFailure = false
 
 pipeline {
     agent any
-	options {
+	try {
+        options {
         timeout(time: 1, unit: 'MINUTES') 
+    }
+    } catch (err) {
+        echo "Caught: ${err}"
+        currentBuild.result = 'FAILURE'
     }
 	parameters {
 		choice(name: 'NXRelease', choices: ['nx2312.latest', 'nx2306.latest', 'nx2212.latest'], description: 'Use the latest IP from NXVersion release to create the build.')
