@@ -9,7 +9,7 @@ def boolean anyFailure = false
 
 pipeline {
     agent any
-	option{
+	options {
 		timeout(time: 1, unit: 'MINUTES')
 	}
 	
@@ -219,7 +219,7 @@ pipeline {
 		always{
 			script{
 				echo 'echo statement.'	
-				//emailHandle.sendEmail(buildDir,stageDir)
+				emailHandle.sendEmail(buildDir,stageDir)
 			}
 		}
     }
