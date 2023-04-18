@@ -25,5 +25,6 @@ then
 	echo "Creating common location directory ${commonLocation}"
 	mkdir -p ${commonLocation} || { exit 1;}
 	chmod -R 0777 ${commonLocation} || { exit 1;}
+	mkdir -p ${commonLocation}/lnx64 || { exit 1;}
 fi
-cp -r ${STAGE_BASE_DIR}/lnx64/ ${commonLocation}
+cp -r ${STAGE_BASE_DIR} ${commonLocation}/lnx64/
