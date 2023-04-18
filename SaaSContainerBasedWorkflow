@@ -10,9 +10,7 @@ def boolean anyFailure = false
 pipeline {
     agent any
 	try {
-        options {
-        timeout(time: 1, unit: 'MINUTES') 
-    }
+		timeout(time: 1, unit: 'MINUTES')
     } catch (err) {
         echo "Caught: ${err}"
         currentBuild.result = 'FAILURE'
