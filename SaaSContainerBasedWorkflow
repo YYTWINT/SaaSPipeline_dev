@@ -10,7 +10,7 @@ def boolean anyFailure = false
 pipeline {
     agent any
 	parameters {
-		string(name: 'NXRelease', defaultValue: 'nx2306.latest', description : 'Use the latest IP from NX2306 release to create the build.')
+		choice(name: 'NXRelease', choices: ['nx2312.latest', 'nx2306.latest', 'nx2212.latest'], description: 'Use the latest IP from NXVersion release to create the build.')
 		string(name: 'UnitPath', defaultValue: '/apps/JenkinsBase/units/Dev', description : 'Path where build unit for the run is to be created.')
 		string(name: 'StagePath', defaultValue: '/apps/JenkinsBase/stage/Dev', description : 'Path where translator worker kits are to be staged.')
 		booleanParam(name: 'HC', defaultValue: false, description : 'Enable horizontal collaboration change package ')
