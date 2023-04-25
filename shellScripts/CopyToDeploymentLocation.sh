@@ -27,4 +27,4 @@ then
 	chmod -R 0777 ${commonLocation} || { exit 1;}
 	mkdir -p ${commonLocation}/lnx64 || { exit 1;}
 fi
-cp -r ${STAGE_BASE_DIR}/ ${commonLocation}/lnx64/
+cp -r ${STAGE_BASE_DIR}/* ${commonLocation}/lnx64/
