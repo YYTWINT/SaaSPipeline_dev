@@ -71,7 +71,7 @@ pipeline {
             steps {
 				script{
 					echo "skip step"
-					//gv.TestUnit(buildDir) 
+					gv.TestUnit(buildDir) 
 				}					
             }
         }
@@ -94,7 +94,7 @@ pipeline {
             steps {
 				script{
 					echo "skip step"
-					//gv.CheckLicenseServer() 
+					gv.CheckLicenseServer() 
 				}					
             }
         }
@@ -106,7 +106,7 @@ pipeline {
             steps {
 				script{
 					echo "skip step"
-					//gv.RemoveRunningContainers() 
+					gv.RemoveRunningContainers() 
 				}					
             }
         }
@@ -117,13 +117,13 @@ pipeline {
 				}
             steps {					
 				script{
-					//try{
-						//gv.BuildAndRunDocker(buildDir,stageDir) 
-					//}
-					//catch (Exception e) {
-						//echo 'Exception occurred: ' + e.toString()
-						//anyFailure = true
-					//}
+					try{
+						gv.BuildAndRunDocker(buildDir,stageDir) 
+					}
+					catch (Exception e) {
+						echo 'Exception occurred: ' + e.toString()
+						anyFailure = true
+					}
 					echo "skip step"
 				}			
             }
@@ -160,7 +160,7 @@ pipeline {
 			steps {
 				script{
 					echo "skip step"
-					//gv.RemoveRunningContainers() 
+					gv.RemoveRunningContainers() 
 				}					
 			}
 		}
