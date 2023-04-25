@@ -172,7 +172,7 @@ pipeline {
 			steps {
 				script{
 					echo "skip step"
-					//gv.DeployContainer(buildDir,stageDir) 
+					gv.DeployContainer(buildDir,stageDir) 
 				}					
 			}
 		}			
