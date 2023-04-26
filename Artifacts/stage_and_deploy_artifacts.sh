@@ -31,7 +31,7 @@ cp -r ${SOURCE_PATH}/*   ${STAGE_DIR}/ || { exit 1;}
 # Then remove selected iteams
 rm -rf ${STAGE_DIR}/debug || { exit 1;}
 rm -rf ${STAGE_DIR}/license || { exit 1;}
-rm -rf ${STAGE_DIR}/dockerfile || { exit 1;}
+rm -f ${STAGE_DIR}/dockerfile || { exit 1;}
 
 CONFIG_FILE_MULTICAD=${STAGE_DIR}/tessUG_multicad.config
 CONFIG_FILE_VIS=${STAGE_DIR}/tessUG_vis.config
