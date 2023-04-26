@@ -135,7 +135,8 @@ pipeline {
 				}
             steps {
 				script{
-					gv.CopyToDeploymentLocation(buildDir,stageDir) 
+					echo "skip step"
+					//gv.CopyToDeploymentLocation(buildDir,stageDir) 
 				}					
             }
         }
@@ -147,7 +148,7 @@ pipeline {
             steps {
 					catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
 					script{
-						gv.DockerCleanup(stageDir) 
+						//gv.DockerCleanup(stageDir) 
 					}
 				}				
             }
@@ -172,7 +173,7 @@ pipeline {
 			steps {
 				script{
 					echo "skip step"
-					gv.DeployContainer(buildDir,stageDir) 
+					//gv.DeployContainer(buildDir,stageDir) 
 				}					
 			}
 		}			
@@ -185,7 +186,7 @@ pipeline {
 			steps {
 				script{
 					if( anyFailure == false ) {
-						gv.Purge("${params.UnitPath}") 
+						//gv.Purge("${params.UnitPath}") 
 					}
 					else {
 						echo "Skipping Purge Unit due to earlier failure"
@@ -202,7 +203,7 @@ pipeline {
 			steps {
 				script{
 					if( anyFailure == false ) {
-						gv.Purge("${params.StagePath}") 
+						//gv.Purge("${params.StagePath}") 
 					}
 					else {
 						echo "Skipping Purge Stage due to earlier failure"
