@@ -148,6 +148,7 @@ pipeline {
             steps {
 					catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
 					script{
+						echo "skip step"
 						//gv.DockerCleanup(stageDir) 
 					}
 				}				
