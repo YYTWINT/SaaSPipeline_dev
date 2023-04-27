@@ -12,7 +12,7 @@ STAGE_DIR=$1
 
 rm -rf ${STAGE_DIR}/TranslatorBinaries/dockerfile || { exit 1;}
 echo $?
-if [ $? == 0]
+if [ $? == 0 ]
 then 
 	echo "file removed"
 fi
