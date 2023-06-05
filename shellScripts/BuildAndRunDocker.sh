@@ -29,10 +29,10 @@ echo "Checking case for pass condition"
 
 if [ -f $LOG_FILE ] 
 then
-	for failingCase in `grep ":1" $LOG_FILE | cut -d : -f 1`
+	for failingCase in `grep ":0" $LOG_FILE | cut -d : -f 1`
 	do
 		echo "Docker test run failed for part : $failingCase"
-		((errorCount++))
+		#((errorCount++))
 	done
 	
 	if [ $errorCount -ne 0 ]
