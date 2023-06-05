@@ -31,7 +31,19 @@ if [ -f $LOG_FILE ]
 then
 	for failingCase in `grep ":0" $LOG_FILE | cut -d : -f 1`
 	do
-		echo "Docker test run failed for part : $failingCase"
+		echo "Docker test 0 for part : $failingCase"
+		#((errorCount++))
+	done
+	
+	for failingCase in `grep ":127" $LOG_FILE | cut -d : -f 1`
+	do
+		echo "Docker test 127 for part : $failingCase"
+		#((errorCount++))
+	done
+	
+	for failingCase in `grep ":1" $LOG_FILE | cut -d : -f 1`
+	do
+		echo "Docker test 1 for part : $failingCase"
 		#((errorCount++))
 	done
 	
